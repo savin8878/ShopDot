@@ -2,12 +2,13 @@ const express = require("express");
 const ErrorHandler = require("./middleware/error");
 const app = express();
 const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
+var bodyParser = require('body-parser');
 const cors = require("cors");
 
 app.use(cors({
-  origin: ['https://eshop-tutorial-pyri.vercel.app',],
-  credentials: true
+  origin: 'https://shop-dot-v3-m3z4.vercel.app',
+  credentials: true,
+  optionsSuccessStatus: 204, // 204 No Content is a common choice
 }));
 
 app.use(express.json());
@@ -15,9 +16,15 @@ app.use(cookieParser());
 app.use("/test", (req, res) => {
   res.send("Hello world!");
 });
+app.use(bodyParser.json({ limit: '135mb' }));
 
-app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+    limit: '135mb',
+    parameterLimit: 80000,
+  }),
+);
 // config
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({
